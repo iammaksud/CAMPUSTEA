@@ -1,0 +1,1 @@
+"""CampusTea backend application package."""
