@@ -6,8 +6,10 @@ from sqlalchemy import engine_from_config, pool
 from app.core.config import get_settings
 from app.database.base import Base
 
-# Import models here as they are added so Alembic can detect them.
-# from app.models import user, post, ...
+# Import the models package so every model class registers itself on
+# Base.metadata before target_metadata is read below — required for
+# Alembic autogenerate to detect the tables.
+import app.models  # noqa: F401
 
 config = context.config
 settings = get_settings()

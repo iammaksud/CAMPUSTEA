@@ -1,4 +1,4 @@
-"""PostgreSQL connection and session factory.
+"""MySQL connection and session factory.
 
 Database connectivity will be used in a future implementation phase.
 """

@@ -1,7 +1,15 @@
-"""Like schemas (architecture placeholder).
+"""Like schemas."""
 
-Planned schemas:
-- LikeResponse (liked: bool, like_count: int)
-"""
+from pydantic import BaseModel
 
-# Schemas will be implemented in a future phase.
+
+class LikeCountResponse(BaseModel):
+    """GET /api/posts/{post_id}/likes response."""
+
+    like_count: int
+
+
+class LikedStatusResponse(BaseModel):
+    """GET /api/posts/{post_id}/liked response."""
+
+    liked: bool

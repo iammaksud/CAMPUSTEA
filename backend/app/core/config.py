@@ -15,9 +15,10 @@ class Settings(BaseSettings):
     app_name: str = "CampusTea API"
     debug: bool = False
 
-    database_url: str = "postgresql+psycopg2://postgres:postgres@localhost:5432/campustea"
+    database_url: str = "mysql+pymysql://root:root@localhost:3306/campustea"
 
     secret_key: str = "change-this-to-a-long-random-secret-key"
+    jwt_algorithm: str = "HS256"
     access_token_expire_minutes: int = 60
 
     cors_origins: str = "http://localhost:5173,http://127.0.0.1:5173"
