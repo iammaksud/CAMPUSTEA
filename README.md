@@ -1,237 +1,379 @@
 # ☕ CampusTea — Anonymous Student Community Platform
 
-CampusTea is a student-focused anonymous community platform designed for sharing campus-related thoughts, experiences, stories, opinions, and discussions without revealing users' real identities.
+CampusTea is a student-focused anonymous community platform where students can share campus-related thoughts, experiences, stories, opinions, and discussions without revealing their real identity.
 
-The platform focuses on creating a fun, simple, and student-centered environment where **the content matters more than the user's real identity.**
+The main idea behind CampusTea is simple:
+
+> **The content matters more than the user's real identity.**
 
 ---
 
 ## 📌 Project Overview
 
-Students often hesitate to share their opinions, experiences, or campus stories publicly because they may not want their real identity associated with the content.
+Students often hesitate to share their opinions, experiences, or campus stories publicly because they may not want their real identity associated with their content.
 
-CampusTea provides a dedicated anonymous community where students can:
+CampusTea provides a dedicated anonymous community where students can freely participate in campus discussions.
 
-- Create anonymous posts
-- Browse campus discussions
-- Comment on posts
-- Like and unlike posts
-- Report inappropriate content
-- View and manage their notifications
-- Browse posts by categories
-- Maintain an anonymous identity
+Users can:
 
-The platform is designed around common student interests and campus culture.
+* Create anonymous posts
+* Browse posts
+* Comment on posts
+* Like and unlike posts
+* Report inappropriate content
+* View their submitted reports
+* Receive and manage notifications
+* Browse content through different categories
 
 ---
 
 ## ✨ Features
 
-### 👤 Authentication & Users
-- User registration and login
-- JWT-based authentication
-- Secure password hashing
-- User roles
-  - User
-  - Admin
-- Anonymous handles
-- Protected API endpoints
+### 🔐 Authentication
+
+* User registration
+* User login
+* JWT-based authentication
+* Secure password hashing
+* Protected API endpoints
+* Active/inactive user handling
+* User roles:
+
+  * User
+  * Admin
+
+### 👤 Anonymous Identity
+
+Users have an anonymous handle instead of displaying their real identity publicly.
+
+For example:
+
+```text
+Anonymous Owl
+Anonymous Lynx
+Anonymous Tiger
+```
+
+The platform internally maintains user ownership while keeping the user's real account information private from other users.
+
+---
 
 ### 📝 Posts
-- Create posts anonymously
-- Browse posts
-- Categorize posts
-- View individual posts
-- Soft-delete posts
-- Track post ownership internally without exposing real identity
+
+Users can:
+
+* Create posts
+* Browse posts
+* View individual posts
+* Organize posts by category
+* Soft-delete their own posts
+
+Posts maintain their ownership internally through the authenticated user's account.
+
+Soft deletion ensures that deleted content can be handled safely without immediately removing its database record.
+
+---
 
 ### 💬 Comments
-- Add comments to posts
-- View comments
-- Soft-delete comments
-- Comments are associated with the authenticated user
+
+Users can:
+
+* Add comments to posts
+* View comments
+* Soft-delete their own comments
+
+Comments are associated with both the post and the authenticated user.
+
+---
 
 ### ❤️ Likes
-- Like posts
-- Unlike posts
-- Check whether the current user liked a post
-- View like counts
-- Database-level protection against duplicate likes
+
+Users can:
+
+* Like posts
+* Unlike posts
+* Check whether they have liked a post
+* View the total number of likes
+
+The database also contains a unique constraint to prevent the same user from liking the same post multiple times.
+
+```text
+(post_id, user_id)
+        ↓
+   UNIQUE
+```
+
+---
 
 ### 🚨 Reports
-- Report inappropriate posts
-- View personal reports
-- Admins can view all reports
-- Admins can update report status
-- Automatically records:
-  - Review time
-  - Reviewing admin
-- Prevents users from spoofing reporter identity
+
+Users can report inappropriate posts.
+
+Users can:
+
+* Submit reports
+* View their own reports
+* View individual reports that belong to them
+
+Administrators can:
+
+* View all reports
+* View individual reports
+* Update report moderation status
+
+Report statuses include:
+
+```text
+PENDING
+REVIEWED
+RESOLVED
+REJECTED
+```
+
+When an administrator reviews a report, the system records:
+
+* Review time
+* Reviewing administrator
+
+---
 
 ### 🔔 Notifications
-- View personal notifications
-- Mark individual notifications as read
-- Mark all notifications as read
-- Notifications are private to the authenticated user
 
-### 🗂️ Categories
+Users can:
 
-CampusTea supports categories such as:
+* View their notifications
+* Mark an individual notification as read
+* Mark all notifications as read
 
-- Gossip
-- Confession
-- Expose
-- Roast
-- Funny Stories
-- Study
-- Opinions
-- Questions
-- Advice
+Notifications are private and can only be accessed by their owner.
 
----
+Notification types include:
 
-## 🛠️ Technologies
-
-| Area | Technology |
-|---|---|
-| Frontend | React |
-| Backend | Python, FastAPI |
-| ORM | SQLAlchemy |
-| Validation | Pydantic |
-| Authentication | JWT |
-| Database | MariaDB / MySQL |
-| Migrations | Alembic |
-| API Documentation | Swagger / OpenAPI |
-| Development | VS Code |
-| Version Control | Git / GitHub |
+```text
+LIKE
+COMMENT
+REPORT
+EVENT
+```
 
 ---
 
-## 🏗️ Project Architecture
+## 🗂️ Content Categories
+
+CampusTea is designed around common student interests and campus culture.
+
+Available categories include:
+
+* Gossip
+* Confession
+* Expose
+* Roast
+* Funny Stories
+* Study
+* Opinions
+* Questions
+* Advice
+
+---
+
+# 🛠️ Technologies Used
+
+| Area                    | Technology        |
+| ----------------------- | ----------------- |
+| Frontend                | React             |
+| Backend                 | Python            |
+| API Framework           | FastAPI           |
+| ORM                     | SQLAlchemy        |
+| Data Validation         | Pydantic          |
+| Authentication          | JWT               |
+| Database                | MariaDB / MySQL   |
+| Database Migration      | Alembic           |
+| API Documentation       | Swagger / OpenAPI |
+| Version Control         | Git / GitHub      |
+| Development Environment | VS Code           |
+
+---
+
+# 🏗️ Project Architecture
 
 ```text
 CampusTea
 │
-├── frontend/
-│   └── React + Vite
-│
 ├── backend/
+│   │
 │   ├── app/
 │   │   ├── core/
+│   │   │
 │   │   ├── database/
+│   │   │
 │   │   ├── models/
+│   │   │
 │   │   ├── schemas/
+│   │   │
 │   │   ├── services/
+│   │   │
 │   │   ├── routers/
+│   │   │
 │   │   └── main.py
 │   │
 │   ├── alembic/
-│   └── requirements.txt
+│   ├── requirements.txt
+│   └── .env
+│
+├── frontend/
+│   │
+│   ├── src/
+│   ├── public/
+│   ├── package.json
+│   └── ...
 │
 └── README.md
-````
+```
 
 ---
 
-## 🗄️ Database
+# 🗄️ Database Design
 
-The main database entities are:
+CampusTea uses MariaDB/MySQL as its relational database.
+
+The main entities are:
 
 ```text
 USERS
    │
-   ├──────── POSTS ──────── CATEGORIES
-   │            │
-   │            ├──────── COMMENTS
-   │            │
-   │            ├──────── LIKES
-   │            │
-   │            └──────── REPORTS
+   ├────────────── POSTS
+   │                 │
+   │                 ├──────── COMMENTS
+   │                 │
+   │                 ├──────── LIKES
+   │                 │
+   │                 └──────── REPORTS
    │
-   └──────── NOTIFICATIONS
+   ├────────────── COMMENTS
+   │
+   ├────────────── LIKES
+   │
+   ├────────────── REPORTS
+   │
+   └────────────── NOTIFICATIONS
+
+CATEGORIES
+   │
+   └────────────── POSTS
 ```
 
 ### Main Tables
 
-* `users`
-* `categories`
-* `posts`
-* `comments`
-* `likes`
-* `reports`
-* `notifications`
+```text
+users
+categories
+posts
+comments
+likes
+reports
+notifications
+```
 
-The database uses foreign keys, indexes, unique constraints, and soft-delete mechanisms where appropriate.
+The database uses:
+
+* Primary keys
+* Foreign keys
+* Unique constraints
+* Indexes
+* Cascading relationships
+* Soft-delete fields
+* Database-level data integrity
 
 ---
 
-## 🔐 Security
+# 🔐 Security
 
-CampusTea uses several security measures:
+Security and ownership isolation are important parts of CampusTea.
+
+The backend uses:
 
 * JWT authentication
 * Password hashing
-* Protected API endpoints
+* Protected endpoints
+* Role-based authorization
 * User ownership validation
-* Admin-only moderation endpoints
-* No `user_id` supplied by clients for ownership-sensitive operations
-* Database-level unique constraint for likes
-* Soft deletion for posts and comments
+* Admin-only moderation operations
+* Database-level constraints
+* Soft deletion
 * Private notification access
-* Sensitive fields such as `password_hash` are never returned through API responses
 
-For example, when a user creates a post:
+Sensitive information such as:
 
 ```text
-Request
+password_hash
+```
+
+is never returned through public API responses.
+
+Ownership-sensitive operations obtain the user's identity from the authenticated JWT rather than trusting a `user_id` supplied by the client.
+
+For example:
+
+```text
+Client
    │
+   │ JWT
    ▼
-JWT Token
+FastAPI
    │
    ▼
 Authenticated User
    │
    ▼
-Backend obtains user ID
+User ID obtained from JWT
    │
    ▼
-Post is created for that user
+Database operation
 ```
 
-The client cannot simply provide another user's ID to create content on their behalf.
+This prevents users from simply submitting another user's ID to perform actions on their behalf.
 
 ---
 
-## 🚀 Getting Started
+# 🚀 Installation & Setup
 
-### Prerequisites
+## Prerequisites
 
-Make sure you have installed:
+Install the following before running CampusTea:
 
 * Python 3.11+
 * Node.js
 * npm
-* MariaDB / MySQL
+* MariaDB or MySQL
 * Git
 
 ---
 
-# Backend Setup
+# ⚙️ Backend Setup
 
 ### 1. Clone the repository
 
 ```bash
-git clone <YOUR_GITHUB_REPOSITORY_URL>
+git clone <YOUR_REPOSITORY_URL>
+```
+
+Go into the project:
+
+```bash
 cd CampusTea
 ```
 
-### 2. Go to the backend
+---
+
+### 2. Open the backend
 
 ```bash
 cd backend
 ```
 
-### 3. Create a virtual environment
+---
+
+### 3. Create a Python virtual environment
 
 Windows:
 
@@ -239,21 +381,41 @@ Windows:
 python -m venv .venv
 ```
 
+---
+
 ### 4. Activate the virtual environment
+
+Windows:
 
 ```bash
 .venv\Scripts\activate
 ```
 
-### 5. Install dependencies
+---
+
+### 5. Install backend dependencies
 
 ```bash
 pip install -r requirements.txt
 ```
 
-### 6. Configure environment variables
+---
 
-Create a `.env` file inside `backend/`.
+### 6. Configure the database
+
+Create a MariaDB/MySQL database for CampusTea.
+
+Example:
+
+```sql
+CREATE DATABASE campustea;
+```
+
+---
+
+### 7. Configure environment variables
+
+Create a `.env` file inside the `backend` directory.
 
 Example:
 
@@ -267,37 +429,39 @@ ALGORITHM=HS256
 ACCESS_TOKEN_EXPIRE_MINUTES=30
 ```
 
-Use your own database username, password, and secret key.
+Use your own database credentials and secret key.
 
-### 7. Run database migrations
+---
+
+### 8. Run database migrations
+
+From the `backend` directory:
 
 ```bash
 alembic upgrade head
 ```
 
-### 8. Start FastAPI
+---
+
+### 9. Start the backend server
 
 ```bash
 uvicorn app.main:app --reload
 ```
 
-Backend will be available at:
+The backend will run at:
 
 ```text
 http://127.0.0.1:8000
 ```
 
-Swagger API documentation:
-
-```text
-http://127.0.0.1:8000/docs
-```
-
 ---
 
-# Frontend Setup
+# 🎨 Frontend Setup
 
 Open another terminal.
+
+Go to the frontend:
 
 ```bash
 cd frontend
@@ -315,7 +479,7 @@ Start the development server:
 npm run dev
 ```
 
-The frontend will normally be available at:
+The frontend will normally run at:
 
 ```text
 http://localhost:5173
@@ -323,194 +487,230 @@ http://localhost:5173
 
 ---
 
-## 🔌 API Modules
+# 📖 API Documentation
 
-The backend provides API functionality for:
+CampusTea uses FastAPI's automatic API documentation.
 
-```text
-Authentication
-    ├── Register
-    ├── Login
-    └── Current User
-
-Users
-    └── Current User Profile
-
-Categories
-    └── Category Management
-
-Posts
-    ├── Create
-    ├── Read
-    └── Soft Delete
-
-Comments
-    ├── Create
-    ├── Read
-    └── Soft Delete
-
-Likes
-    ├── Like
-    ├── Unlike
-    ├── Count
-    └── Liked Status
-
-Reports
-    ├── Create
-    ├── My Reports
-    ├── View Report
-    ├── Admin List
-    └── Admin Review
-
-Notifications
-    ├── List
-    ├── Mark Read
-    └── Mark All Read
-```
-
----
-
-## 📖 API Documentation
-
-Once the backend is running, FastAPI automatically provides interactive API documentation.
-
-### Swagger UI
+After starting the backend, open:
 
 ```text
 http://127.0.0.1:8000/docs
 ```
 
-### OpenAPI Schema
+Swagger UI allows developers to:
+
+* View available endpoints
+* View request parameters
+* View response schemas
+* Authenticate with JWT
+* Test API endpoints
+
+OpenAPI specification:
 
 ```text
 http://127.0.0.1:8000/openapi.json
 ```
 
-Swagger can be used to test authentication and API endpoints during development.
+---
+
+# 🔌 Backend API Modules
+
+The backend is organized into separate API modules.
+
+```text
+Authentication
+│
+├── Register
+├── Login
+└── Current User
+
+Users
+│
+└── Current User Profile
+
+Categories
+│
+└── Category Management
+
+Posts
+│
+├── Create
+├── Read
+└── Soft Delete
+
+Comments
+│
+├── Create
+├── Read
+└── Soft Delete
+
+Likes
+│
+├── Like
+├── Unlike
+├── Like Count
+└── Liked Status
+
+Reports
+│
+├── Create Report
+├── My Reports
+├── View Report
+├── Admin Report List
+└── Admin Review
+
+Notifications
+│
+├── List Notifications
+├── Mark Notification Read
+└── Mark All Notifications Read
+```
 
 ---
 
-## 🧪 Testing
+# 🧪 Testing & Verification
 
-The backend has been tested for important scenarios including:
+The backend has been tested against important functional and security scenarios.
 
-* Authentication
-* Unauthorized access
+Testing includes:
+
+* User registration
+* User login
+* JWT authentication
+* Protected endpoints
 * User ownership
 * Post creation
 * Comment creation
-* Like/unlike operations
+* Like and unlike functionality
 * Duplicate like prevention
 * Report creation
-* Admin report moderation
+* Report ownership
+* Admin report management
+* Report status updates
 * Notification ownership
+* Marking notifications as read
 * Soft-deleted post behavior
 * Invalid request validation
+* Unauthorized access
 * Sensitive data protection
 
-Special attention was given to preventing users from spoofing another user's identity through request bodies.
+The API was also checked through Swagger/OpenAPI during development.
 
 ---
 
-## 🔮 Future Work
+# 📊 Database Screenshots
 
-The following features can be added in future versions:
+The database contains the following main tables:
 
-### Admin
+```text
+users
+posts
+categories
+comments
+likes
+reports
+notifications
+```
+
+These tables demonstrate the relationships between users, posts, categories, interactions, moderation reports, and notifications.
+
+---
+
+# 🔮 Future Work
+
+Although CampusTea provides the core functionality of an anonymous student community platform, several improvements can be added in future versions.
+
+## 👨‍💼 Admin
 
 * Dedicated admin dashboard
 * User management
-* Content moderation interface
+* Better content moderation
+* Report management interface
 
-### Discovery
+## 🔎 Discovery
 
-* Search
+* Search functionality
 * Trending posts
-* Better category discovery
+* Improved category discovery
+* Popular content
 
-### Notifications
+## 🔔 Notifications
 
 * Automatic notifications for likes
 * Automatic notifications for comments
 * Automatic moderation notifications
 
-### Security
+## 🛡️ Security
 
 * Rate limiting
 * Abuse prevention
-* Better moderation tools
+* Advanced moderation
+* Spam detection
 
-### Deployment
+## 🌐 Deployment
 
 * HTTPS
 * Production database
 * Monitoring
 * Logging
-* Automated backups
+* Automated database backups
 
-### Frontend
+## 📱 Frontend
 
 * Better mobile responsiveness
-* Accessibility improvements
+* Improved accessibility
 * Improved UI/UX
+* Better navigation
+
+## 🧪 Testing
+
+* More unit tests
+* More integration tests
+* Automated testing pipeline
+* Continuous integration
 
 ---
 
-## 🎯 Project Goal
+# 🎯 Project Goal
 
-The main goal of CampusTea is to provide students with a space where they can participate in campus discussions without worrying about exposing their real identity.
+CampusTea was designed to create a comfortable digital environment where students can share their thoughts and experiences without needing to reveal their real identity.
+
+The platform focuses on:
+
+```text
+Anonymous Identity
+       +
+Student Community
+       +
+Campus Discussions
+       +
+Safe Interaction
+       =
+CampusTea
+```
+
+The core idea is:
 
 > **The content matters more than the user's real identity.**
 
 ---
 
-## 👨‍💻 Author
+# 👨‍💻 Author
 
 **Maksudul Islam**
 
-Student ID: **241-35-537**
+**Student ID:** 241-35-537
 
-Section: **42 H1**
+**Section:** 42 H1
 
 ---
 
-## 📄 Academic Project
+# 🎓 Academic Project
 
-CampusTea was developed as an academic software project to demonstrate the design and implementation of a full-stack anonymous student community platform using modern web technologies.
+CampusTea is an academic full-stack software project demonstrating the development of an anonymous student community platform using modern web technologies, REST APIs, relational database design, authentication, authorization, and frontend-backend integration.
 
-````
+---
 
-### One important thing before pushing
+## 📄 License
 
-Since you're putting this on GitHub, **do not put your `.env` file, database password, JWT secret, `.venv`, or `node_modules` in the repository.**
-
-Your `.gitignore` should include at least:
-
-```gitignore
-# Python
-.venv/
-__pycache__/
-*.pyc
-
-# Environment
-.env
-
-# Node
-node_modules/
-dist/
-
-# IDE
-.vscode/
-.idea/
-
-# OS
-.DS_Store
-Thumbs.db
-````
-
-Also replace:
-
-```text
-https://github.com/iammaksud/CAMPUSTEA/
-```
-
+This project was developed for academic and educational purposes.
